@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HawkeyeTfe.rc" />
+    <Inf Include="HawkeyeTfe.inf" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</ProjectGuid>
+    <TemplateGuid>{f2f62967-0815-4fd7-9b86-6eedcac766eb}</TemplateGuid>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <Configuration>Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+    <RootNamespace>HawkeyeTfe</RootNamespace>
+    <ProjectName>HawkeyeTfe</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>WDM</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>WDM</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>HawkeyeTfe</TargetName>
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <EnableInf2cat>false</EnableInf2cat>
+    <SignMode>Off</SignMode>
+    <DriverSign>false</DriverSign>
+    <PackageDirToDeploy />
+    <PackageCertificateFile />
+    <PackageCertificateThumbprint />
+    <PackageOutputPath />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>HawkeyeTfe</TargetName>
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <EnableInf2cat>false</EnableInf2cat>
+    <SignMode>Off</SignMode>
+    <DriverSign>false</DriverSign>
+    <PackageDirToDeploy />
+    <PackageCertificateFile />
+    <PackageCertificateThumbprint />
+    <PackageOutputPath />
+  </PropertyGroup>
+
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling>false</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DBG;_DEBUG;AMD64;_AMD64_;NTDDI_VERSION=0x0A000005;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>fltmgr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>powershell -NoProfile -ExecutionPolicy Bypass -Command "&amp; '$(SolutionDir)scripts\sign_driver.ps1' -SysPath '$(TargetPath)'" &amp; copy /Y "$(TargetPath)" "$(SolutionDir)scripts\HawkeyeTfe.sys" &amp; copy /Y "$(TargetDir)HawkeyeTfe_Test.cer" "$(SolutionDir)scripts\HawkeyeTfe_Test.cer"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <ExceptionHandling>false</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;AMD64;_AMD64_;NTDDI_VERSION=0x0A000005;WINVER=0x0601;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>fltmgr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+    <PostBuildEvent>
+      <Command>powershell -NoProfile -ExecutionPolicy Bypass -Command "&amp; '$(SolutionDir)scripts\sign_driver.ps1' -SysPath '$(TargetPath)'" &amp; copy /Y "$(TargetPath)" "$(SolutionDir)scripts\HawkeyeTfe.sys" &amp; copy /Y "$(TargetDir)HawkeyeTfe_Test.cer" "$(SolutionDir)scripts\HawkeyeTfe_Test.cer"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <ClInclude Include="HawkCacheMgr.h" />
+    <ClInclude Include="HawkeyeTfe.h" />
+    <ClInclude Include="HawkProtectPath.h" />
+    <ClInclude Include="HawkFsp.h" />
+    <ClInclude Include="HawkCipher.h" />
+    <ClInclude Include="HawkPlaintextCache.h" />
+    <ClInclude Include="HawkScb.h" />
+    <ClInclude Include="HawkShc.h" />
+    <ClInclude Include="HawkSetup.h" />
+    <ClInclude Include="HawkOperations.h" />
+    <ClInclude Include="HawkCreateCore.h" />
+    <ClInclude Include="HawkRedirect.h" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="HawkAcquire.c" />
+    <ClCompile Include="HawkCacheMgr.c" />
+    <ClCompile Include="HawkCleanup.c" />
+    <ClCompile Include="HawkCreate.c" />
+    <ClCompile Include="HawkCreateCore.c" />
+    <ClCompile Include="HawkMain.c" />
+    <ClCompile Include="HawkProtectPath.c" />
+    <ClCompile Include="HawkFsp.c" />
+    <ClCompile Include="HawkCipher.c" />
+    <ClCompile Include="HawkRedirect.c" />
+    <ClCompile Include="HawkPlaintextCache.c" />
+    <ClCompile Include="HawkQueryInfo.c" />
+    <ClCompile Include="HawkRead.c" />
+    <ClCompile Include="HawkScb.c" />
+    <ClCompile Include="HawkShc.c" />
+    <ClCompile Include="HawkSetInfo.c" />
+    <ClCompile Include="HawkSetup.c" />
+    <ClCompile Include="HawkWrite.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

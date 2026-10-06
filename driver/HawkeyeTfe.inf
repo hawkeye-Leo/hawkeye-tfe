@@ -1,0 +1,74 @@
+[Version]
+Signature         = "$Windows NT$"
+Class             = "HawkeyeTfe"
+ClassGuid         = {4daa94a8-f37f-400a-ac5a-69395d09ada0}
+Provider          = %ManufacturerName%
+DriverVer         = 08/25/2026,1.0.0.0
+CatalogFile       = HawkeyeTfe.cat
+PnpLockdown       = 1
+DriverPackageType = FileSystemMiniFilter
+
+[ClassInstall32]
+Addreg = HawkeyeTfeClassAddReg
+
+[HawkeyeTfeClassAddReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[DestinationDirs]
+DefaultDestDir         = 12
+MiniFilter.DriverFiles = 12
+
+[Manufacturer]
+%ManufacturerName% = Standard, NTamd64
+
+[Standard.NTamd64]
+%HawkeyeTfe.DeviceDesc% = HawkeyeTfe_Inst, HawkeyeTfe_CompatID
+
+[HawkeyeTfe_Inst.NTamd64]
+OptionDesc = %ServiceDescription%
+CopyFiles  = MiniFilter.DriverFiles
+
+[HawkeyeTfe_Inst.NTamd64.Services]
+AddService = %ServiceName%,,MiniFilter.Service
+
+[MiniFilter.Service]
+DisplayName      = %ServiceName%
+Description      = %ServiceDescription%
+ServiceBinary    = %12%\%DriverName%.sys
+Dependencies     = "FltMgr"
+ServiceType      = 2
+StartType        = 3
+ErrorControl     = 1
+LoadOrderGroup   = "FSFilter Encryption"
+AddReg           = MiniFilter.AddRegistry
+
+[MiniFilter.AddRegistry]
+HKR,,"DebugFlags",0x00010001 ,0x0
+HKR,,"SupportedFeatures",0x00010001,0x3
+HKR,"Instances","DefaultInstance",0x00000000,%DefaultInstance%
+HKR,"Instances\"%Instance1.Name%,"Altitude",0x00000000,%Instance1.Altitude%
+HKR,"Instances\"%Instance1.Name%,"Flags",0x00010001,%Instance1.Flags%
+
+[MiniFilter.DriverFiles]
+%DriverName%.sys
+
+[SourceDisksFiles]
+HawkeyeTfe.sys = 1,,
+
+[SourceDisksNames]
+1 = %DiskId1%,,,
+
+[Strings]
+ClassName                             = "Hawkeye TFE Filter"
+ManufacturerName                      = "Hawkeye"
+ServiceDescription                    = "HawkeyeTfe XOR Mini-Filter Driver"
+ServiceName                           = "HawkeyeTfe"
+DriverName                            = "HawkeyeTfe"
+DiskId1                               = "HawkeyeTfe Device Installation Disk"
+HawkeyeTfe.DeviceDesc                 = "HawkeyeTfe XOR Filter"
+
+DefaultInstance         = "HawkeyeTfe Instance"
+Instance1.Name          = "HawkeyeTfe Instance"
+Instance1.Altitude      = "407800"
+Instance1.Flags         = 0x0

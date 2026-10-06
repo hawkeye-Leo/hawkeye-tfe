@@ -1,0 +1,22 @@
+# Visual Studio / WDK build output
+x64/
+driver/x64/
+scripts/HawkeyeTfe.sys
+scripts/HawkeyeTfe_Test.cer
+driver/RC*
+*.user
+*.filters
+*.log
+*.tlog/
+*.recipe
+*.Build.CppClean.log
+*.opendb
+*.VC.db
+.vs/
+
+# Local tools (not published)
+tools/
+
+# Local debug artifacts
+*.dmp
+*.wds
